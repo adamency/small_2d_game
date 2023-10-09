@@ -3,6 +3,8 @@ extends RigidBody2D
 var swim_state = 0
 var fly_orig_linear_velocity
 var walk_timer
+# Rotation is reset to its initial value (unknown why) at each pass if we simply modify the property directly,
+# so we keep track of the correct state here and reapply it at each frame
 var walk_last_rotation
 
 func _ready():
@@ -49,7 +51,7 @@ func process_swim(delta):
 	swim_state += 1
 
 func process_walk(delta):
-	pass
+	rotation = walk_last_rotation
 	
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
