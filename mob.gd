@@ -15,7 +15,7 @@ func _ready():
 		walk_timer = Timer.new()
 		add_child(walk_timer)
 		walk_timer.set_wait_time(1.0)
-		walk_timer.set_one_shot(true)
+		walk_timer.connect("timeout", _on_walk_timer_timeout)
 		walk_timer.start()
 #		_print_instance(["WALK TIMER IS STOPPED: ", walk_timer.is_stopped()])
 
@@ -49,16 +49,17 @@ func process_swim(delta):
 	swim_state += 1
 
 func process_walk(delta):
-	if walk_timer.is_stopped():
-#		_print_instance([walk_timer.is_stopped()])
-		var turn = PI / 2 * ((randi() % 2) * 2 - 1)
-		rotation = walk_last_rotation + turn
-		linear_velocity = linear_velocity.rotated(turn)
-		walk_timer.start()
-	walk_last_rotation = rotation
+	pass
 	
 func _on_visible_on_screen_notifier_2d_screen_exited():
 	queue_free()
+	
+func _on_walk_timer_timeout():
+	#_print_instance("I TIMED OUT")
+	var turn = PI / 2 * ((randi() % 2) * 2 - 1)
+	rotation = walk_last_rotation + turn
+	linear_velocity = linear_velocity.rotated(turn)
+	walk_last_rotation = rotation
 
 func _print_instance(args):
 	var output = str(get_instance_id()) + " - "
